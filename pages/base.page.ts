@@ -11,6 +11,7 @@ export class BasePage {
   readonly loggedInAccountButton: Locator;
   readonly deleteAccountButton: Locator;
   readonly logoutButton: Locator;
+  readonly contactUsButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -31,5 +32,6 @@ export class BasePage {
       name: "Delete Account",
     });
     this.logoutButton = page.locator("//a[contains(text(), ' Logout')]");
+    this.contactUsButton = page.locator("//a[contains(text(), ' Contact us')]");
   }
 }
