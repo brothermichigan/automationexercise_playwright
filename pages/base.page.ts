@@ -30,6 +30,6 @@ export class BasePage {
     this.deleteAccountButton = page.getByRole("link", {
       name: "Delete Account",
     });
-    this.logoutButton = page.locator("//a[contains(text(), ' Logout'");
+    this.logoutButton = page.locator("//a[contains(text(), ' Logout')]");
   }
 }
