@@ -41,7 +41,6 @@ test("Register User", async ({ basePage, page }) => {
   await basePage.signupLoginButton.click();
 
   // 5. Verify 'New User Signup!' is visible
-
   await expect(loginPage.newUserSignupHeader).toBeVisible();
 
   // 6. Enter name and email address
@@ -89,4 +88,110 @@ test("Register User", async ({ basePage, page }) => {
   // 18. Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
   await expect(accountDeletedPage.accountDeletedHeader).toBeVisible();
   await accountDeletedPage.continueButton.click();
+});
+
+test("Login User with correct email and password and logout", async ({
+  page,
+  basePage,
+}) => {
+  const loginPage = new LoginPage(page);
+  const email = "thisismytestemail@mail.com";
+  const password = "password";
+  const username = "thisismytestuser";
+
+  // 1. Launch browser
+  // 2. Navigate to url 'http://automationexercise.com'
+  await page.goto("https://automationexercise.com/");
+
+  // 3. Verify that home page is visible successfully
+  await expect(page).toHaveURL("https://automationexercise.com/");
+  await expect(page).toHaveTitle("Automation Exercise");
+
+  // 4. Click on 'Signup / Login' button
+  await basePage.signupLoginButton.click();
+
+  // 5. Verify 'Login to your account' is visible
+  await expect(loginPage.loginToYourAccountHeader).toBeVisible();
+
+  // 6. Enter correct email address and password
+  await loginPage.enterExistingUserEmail(email);
+  await loginPage.enterExistingUserPassword(password);
+
+  // 7. Click 'login' button
+  await loginPage.loginButton.click();
+
+  // 8. Verify that 'Logged in as username' is visible
+  await expect(
+    basePage.loggedInAccountButton.filter({ hasText: username })
+  ).toBeVisible();
+
+  // Diverging from the test case as described here since we've already tested deletion
+  // Includes Test Case 4: Logout user
+  // 9. Click 'logout' button
+  await basePage.logoutButton.click();
+});
+
+test("Login User with incorrect email and password", async ({
+  page,
+  basePage,
+}) => {
+  const loginPage = new LoginPage(page);
+  const email = "thisismytestemail@mail.com";
+  const password = "notthepassword";
+  const username = "thisismytestuser";
+
+  // 1. Launch browser
+  // 2. Navigate to url 'http://automationexercise.com'
+  await page.goto("https://automationexercise.com/");
+
+  // 3. Verify that home page is visible successfully
+  await expect(page).toHaveURL("https://automationexercise.com/");
+  await expect(page).toHaveTitle("Automation Exercise");
+
+  // 4. Click on 'Signup / Login' button
+  await basePage.signupLoginButton.click();
+
+  // 5. Verify 'Login to your account' is visible
+  await expect(loginPage.loginToYourAccountHeader).toBeVisible();
+
+  // 6. Enter correct email address and password
+  await loginPage.enterExistingUserEmail(email);
+  await loginPage.enterExistingUserPassword(password);
+
+  // 7. Click 'login' button
+  await loginPage.loginButton.click();
+
+  // 8. Verify error 'Your email or password is incorrect!' is visible
+  await expect(loginPage.incorrectEmailOrPassword).toBeVisible();
+});
+
+test("Register user with existing email", async ({ page, basePage }) => {
+  const loginPage = new LoginPage(page);
+  const email = "thisismytestemail@mail.com";
+  const password = "password";
+  const username = "thisismytestuser";
+
+  // 1. Launch browser
+  // 2. Navigate to url 'http://automationexercise.com'
+  await page.goto("https://automationexercise.com/");
+
+  // 3. Verify that home page is visible successfully
+  await expect(page).toHaveURL("https://automationexercise.com/");
+  await expect(page).toHaveTitle("Automation Exercise");
+
+  // 4. Click on 'Signup / Login' button
+  await basePage.signupLoginButton.click();
+
+  // 5. Verify 'New User Signup!' is visible
+  await expect(loginPage.newUserSignupHeader).toBeVisible();
+
+  // 6. Enter name and already registered email address
+  await loginPage.enterExistingUserEmail(email);
+  await loginPage.enterExistingUserPassword(password);
+
+  // 7. Click 'Signup' button
+  await loginPage.signupButton.click();
+
+  // 8. Verify error 'Email Address already exist!' is visible
+  await expect(loginPage.emailAlreadyExists).toBeVisible;
 });
